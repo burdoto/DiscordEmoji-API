@@ -25,4 +25,4 @@ Requested object are stored in a cache and can be re-requested by their IDs usin
 ## Speed Test Results
 These are the time results for the wrapper when performing a full cache refresh on startup:
 
-![Speedtest Results](http://kaleidox.de/share/img/api/discordemoji/speedtest-results.png)]
+![Speedtest Results](http://kaleidox.de/share/img/api/discordemoji/speedtest-results.png)
