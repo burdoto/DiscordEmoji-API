@@ -7,12 +7,15 @@ import de.kaleidox.discordemoji.model.Emoji;
 
 import org.junit.Test;
 
+import static org.junit.Assert.assertTrue;
+
 public class EmojiTest {
     @Test
     public void testRequestAndDeserialize() {
         Collection<Emoji> emojis = DiscordEmoji.refreshEmojiCache().join();
 
-        //System.out.println("emojis = " + emojis);
+        assertTrue(emojis.parallelStream().noneMatch(emoji -> emoji.getImageURL() == null));
+
         System.out.println("emojis.size() = " + emojis.size());
     }
 }
