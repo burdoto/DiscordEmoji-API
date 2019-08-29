@@ -6,7 +6,7 @@ buildscript {
 apply plugin: 'java-library'
 
 group 'de.kaleidox'
-version '0.0.0'
+version '1.0.0'
 
 apply from: 'gradle/vars.gradle'
 
