@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>de.kaleidox</groupId>
+  <artifactId>discordemoji-api</artifactId>
+  <version>1.0.0</version>
+  <name>DiscordEmoji-API</name>
+  <description>Java Wrapper for the DiscordEmoji.com API</description>
+  <url>https://github.com/burdoto/DiscordEmoji-API</url>
+  <inceptionYear>2019</inceptionYear>
+  <licenses>
+    <license>
+      <name>The Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>burdoto</id>
+      <name>Tobias Burdow</name>
+      <email>burdoto@outlook.com</email>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:git://github.com/burdoto/DiscordEmoji-API.git</connection>
+    <developerConnection>scm:git:ssh://github.com/burdoto/DiscordEmoji-API.git</developerConnection>
+    <url>https://github.com/burdoto/DiscordEmoji-API</url>
+  </scm>
+  <dependencies>
+    <dependency>
+      <groupId>com.squareup.okhttp3</groupId>
+      <artifactId>okhttp</artifactId>
+      <version>4.1.0</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.10.0.pr1</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.module</groupId>
+      <artifactId>jackson-module-afterburner</artifactId>
+      <version>1.9.4</version>
+      <scope>runtime</scope>
+    </dependency>
+  </dependencies>
+</project>
