@@ -1,0 +1,14 @@
+import static java.lang.System.getenv
+
+ext {
+    artifactName = "FILL-GRADLE-VARS" // todo
+    projectName = "FILL-GRADLE-VARS" // todo
+    projectDescription = "FILL-GRADLE-VARS" // todo
+
+    snapshot = project.version.endsWith("-SNAPSHOT")
+
+    sonatypeUsername = getenv("sonatypeUsername")
+    sonatypePassword = getenv("sonatypePassword")
+}
+
+ext."signing.password" = getenv("gpgKeyPassword")

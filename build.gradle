@@ -1,0 +1,61 @@
+buildscript {
+    repositories.gradlePluginPortal()
+    dependencies.classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.21.0"
+}
+
+apply plugin: 'java-library'
+
+group 'de.kaleidox'
+version '0.0.0'
+
+apply from: 'gradle/vars.gradle'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+wrapper {
+    gradleVersion = '5.6'
+    distributionUrl = "https://services.gradle.org/distributions/gradle-$gradleVersion-all.zip"
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allJava
+    archiveClassifier = "sources"
+}
+
+task javadocJar(type: Jar) {
+    doFirst {
+        javadoc
+    }
+    
+    from javadoc.destinationDir
+    archiveClassifier = "javadoc"
+}
+
+javadoc {
+    source = sourceSets.main.java
+    options {
+        encoding = 'UTF-8'
+        destinationDirectory(file("./docs/"))
+        links = [
+                "https://docs.oracle.com/javase/8/docs/api/",
+                "https://docs.oracle.com/javaee/7/api/"
+        ]
+    }
+}
+
+compileJava.options.encoding = 'UTF-8'
+repositories.jcenter()
+
+dependencies {
+    compileOnly 'org.jetbrains:annotations:17.0.0'
+
+    testImplementation 'junit:junit:4.12'
+}
+
+sourceSets {
+    main.java.srcDirs = ["src\\main\\java"]
+    test.java.srcDirs = ["src\\test\\java"]
+}
+
+apply from: 'gradle/publishing.gradle'

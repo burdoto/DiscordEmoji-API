@@ -1,0 +1,77 @@
+apply plugin: 'maven-publish'
+apply plugin: "io.codearte.nexus-staging"
+
+publishing {
+    repositories {
+        maven {
+            url = snapshot
+                    ? "https://oss.sonatype.org/content/repositories/snapshots"
+                    : "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+            name = "Sonatype"
+
+            credentials {
+                username sonatypeUsername
+                password sonatypePassword
+            }
+        }
+    }
+
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId = artifactName
+            from components.java
+
+            artifact sourcesJar
+            artifact javadocJar
+
+            pom {
+                name = projectName
+                description = projectDescription
+                inceptionYear = '2019'
+                url = "https://github.com/burdoto/${projectName}".toString()
+
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id = "burdoto"
+                        name = "Tobias Burdow"
+                        email = "burdoto@outlook.com"
+                    }
+                }
+
+                scm {
+                    connection = "scm:git:git://github.com/burdoto/${projectName}.git".toString()
+                    developerConnection = "scm:git:ssh://github.com/burdoto/${projectName}.git".toString()
+                    url = "https://github.com/burdoto/${projectName}".toString()
+                }
+            }
+        }
+    }
+}
+
+task generateGitHubPom(type: GenerateMavenPom) {
+    destination = "pom.xml"
+    pom = publishing.publications.mavenJava.pom
+}
+
+if (!System.getenv().containsKey("JITPACK")) {
+    apply plugin: 'signing'
+    
+    signing {
+        useGpgCmd()
+        sign publishing.publications.mavenJava
+    }
+}
+
+tasks.removeAll([promoteRepository, closeAndPromoteRepository, getStagingProfile])
+
+nexusStaging {
+    username sonatypeUsername
+    password sonatypePassword
+}
