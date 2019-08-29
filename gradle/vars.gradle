@@ -1,9 +1,9 @@
 import static java.lang.System.getenv
 
 ext {
-    artifactName = "FILL-GRADLE-VARS" // todo
-    projectName = "FILL-GRADLE-VARS" // todo
-    projectDescription = "FILL-GRADLE-VARS" // todo
+    artifactName = "discordemoji-api"
+    projectName = "DiscordEmoji-API"
+    projectDescription = "Java Wrapper for the DiscordEmoji.com API"
 
     snapshot = project.version.endsWith("-SNAPSHOT")
 
