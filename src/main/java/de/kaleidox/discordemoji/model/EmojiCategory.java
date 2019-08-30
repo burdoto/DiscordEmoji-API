@@ -1,8 +1,7 @@
 package de.kaleidox.discordemoji.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.jetbrains.annotations.Nullable;
@@ -11,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
  * Representation of an EmojiCategory.
  */
 public class EmojiCategory {
-    private static final Map<Integer, EmojiCategory> cache = new HashMap<>();
+    private static final List<EmojiCategory> cache = new ArrayList<>();
 
     private final String name;
     private final int index;
@@ -20,7 +19,7 @@ public class EmojiCategory {
         this.name = name;
         this.index = index;
 
-        cache.put(index, this);
+        update(index);
     }
 
     /**
@@ -42,17 +41,17 @@ public class EmojiCategory {
     }
 
     private EmojiCategory update(int newIndex) {
-        ArrayList<Map.Entry<Integer, EmojiCategory>> entries = new ArrayList<>(cache.entrySet());
+        if (cache.size() > newIndex) {
+            EmojiCategory oldValue = cache.get(newIndex);
+            int oldIndex = cache.indexOf(this);
 
-        Map.Entry<Integer, EmojiCategory> oldEntry = entries.get(newIndex);
+            cache.set(newIndex, this);
 
-        int oldIndex;
-        for (oldIndex = 0; oldIndex < entries.size(); oldIndex++)
-            if (entries.get(oldIndex).getValue().equals(oldEntry.getValue()))
-                break;
-
-        cache.put(newIndex, this);
-        cache.put(oldIndex, oldEntry.getValue());
+            if (oldIndex == -1)
+                cache.add(oldValue);
+            else
+                cache.set(oldIndex, oldValue);
+        } else cache.add(this);
 
         return this;
     }
@@ -65,7 +64,7 @@ public class EmojiCategory {
      * @return The category, or null if the index could not be found.
      */
     public static @Nullable EmojiCategory getByIndex(int index) {
-        return cache.getOrDefault(index, null);
+        return cache.get(index);
     }
 
     /**
@@ -73,8 +72,10 @@ public class EmojiCategory {
      * You should never call this method yourself.
      */
     public static EmojiCategory getOrCreate(JsonNode data, int index) {
-        return cache.compute(index, (i, category) -> category == null
-                ? new EmojiCategory(data.asText(), i)
-                : category.update(i));
+        EmojiCategory cat;
+
+        if (cache.size() > index && (cat = cache.get(index)) != null)
+            return cat.update(index);
+        else return new EmojiCategory(data.asText(), index);
     }
 }
