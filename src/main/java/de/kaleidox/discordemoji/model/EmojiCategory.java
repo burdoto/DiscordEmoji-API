@@ -96,11 +96,7 @@ public class EmojiCategory {
                 .thenApply(categories -> getByIndex(index));
     }
 
-    /**
-     * Internal method.
-     * You should never call this method yourself.
-     */
-    public static EmojiCategory getOrCreate(JsonNode data, int index) {
+    private static EmojiCategory getOrCreate(JsonNode data, int index) {
         EmojiCategory cat;
 
         if (cache.size() > index && (cat = cache.get(index)) != null)

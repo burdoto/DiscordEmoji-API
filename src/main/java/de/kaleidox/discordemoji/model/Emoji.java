@@ -233,11 +233,7 @@ public class Emoji {
                         new NoSuchElementException("No emoji with ID [" + id + "] was found!")));
     }
 
-    /**
-     * Internal method.
-     * You should never call this method yourself.
-     */
-    public static Emoji getOrCreate(JsonNode data) {
+    private static Emoji getOrCreate(JsonNode data) {
         return cache.compute(data.get("id").asInt(), (id, emoji) -> emoji == null ? new Emoji(data) : emoji.update(data));
     }
 }

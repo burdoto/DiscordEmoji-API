@@ -165,11 +165,7 @@ public class EmojiPack {
                         new NoSuchElementException("No pack with ID [" + id + "] was found!")));
     }
 
-    /**
-     * Internal method.
-     * You should never call this method yourself.
-     */
-    public static EmojiPack getOrCreate(JsonNode data) {
+    private static EmojiPack getOrCreate(JsonNode data) {
         return cache.compute(data.get("id").asInt(), (id, pack) -> pack == null
                 ? new EmojiPack(data)
                 : pack.update(data));

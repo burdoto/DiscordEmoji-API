@@ -1,8 +1,11 @@
 package de.kaleidox.discordemoji;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 
 import de.kaleidox.discordemoji.model.Emoji;
 import de.kaleidox.discordemoji.model.EmojiCategory;
@@ -19,7 +22,26 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * Facade class for communicating with https://discordemoji.com/
  */
 public final class DiscordEmoji {
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+    private static final ObjectMapper objectMapper;
+    private static final Map<Class, Method> getOrCreateMethodMap;
+
+    static {
+        objectMapper = new ObjectMapper();
+        getOrCreateMethodMap = new ConcurrentHashMap<>();
+
+        try {
+            getOrCreateMethodMap.put(Emoji.class,
+                    Emoji.class.getDeclaredMethod("getOrCreate", JsonNode.class));
+            getOrCreateMethodMap.put(EmojiPack.class,
+                    EmojiPack.class.getDeclaredMethod("getOrCreate", JsonNode.class));
+            getOrCreateMethodMap.put(EmojiCategory.class,
+                    EmojiCategory.class.getDeclaredMethod("getOrCreate", JsonNode.class, int.class));
+
+            getOrCreateMethodMap.values().forEach(method -> method.setAccessible(true));
+        } catch (Throwable t) {
+            throw new RuntimeException("Initialization Exception", t);
+        }
+    }
 
     private DiscordEmoji() {
         // nope
@@ -37,7 +59,7 @@ public final class DiscordEmoji {
                     Collection<Emoji> yields = new ArrayList<>();
 
                     for (JsonNode emoji : node)
-                        yields.add(Emoji.getOrCreate(emoji));
+                        yields.add(accessCache_rethrow(Emoji.class, emoji));
 
                     return yields;
                 });
@@ -55,7 +77,7 @@ public final class DiscordEmoji {
                     Collection<EmojiPack> yields = new ArrayList<>();
 
                     for (JsonNode emojiPack : node)
-                        yields.add(EmojiPack.getOrCreate(emojiPack));
+                        yields.add(accessCache_rethrow(EmojiPack.class, emojiPack));
 
                     return yields;
                 });
@@ -74,7 +96,7 @@ public final class DiscordEmoji {
                     Collection<EmojiCategory> yields = new ArrayList<>();
 
                     for (int i = 0; i < node.size(); i++)
-                        yields.add(EmojiCategory.getOrCreate(node, i));
+                        yields.add(accessCache_rethrow(EmojiCategory.class, node, i));
 
                     return yields;
                 });
@@ -103,6 +125,16 @@ public final class DiscordEmoji {
             return objectMapper.readTree(data);
         } catch (JsonProcessingException e) {
             throw new RuntimeException("JSON Deserialization Exception", e);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T> T accessCache_rethrow(Class<T> type, Object... args) {
+        try {
+            return (T) getOrCreateMethodMap.get(type)
+                    .invoke(null, args);
+        } catch (Throwable t) {
+            throw new RuntimeException("ReflectiveOperationException", t);
         }
     }
 }
