@@ -1,12 +1,12 @@
 package de.kaleidox.discordemoji.model;
 
 import java.net.URL;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.OptionalInt;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 import de.kaleidox.discordemoji.DiscordEmoji;
@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Contract;
  * Representation of an Emoji
  */
 public class Emoji {
-    private static final Map<Integer, Emoji> cache = new HashMap<>();
+    private static final Map<Integer, Emoji> cache = new ConcurrentHashMap<>();
 
     @JsonProperty(required = true) private int id;
     @JsonProperty(required = true) private String title;
