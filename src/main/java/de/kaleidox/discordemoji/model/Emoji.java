@@ -3,8 +3,11 @@ package de.kaleidox.discordemoji.model;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.OptionalInt;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
 
 import de.kaleidox.discordemoji.DiscordEmoji;
 import de.kaleidox.util.PromisedValue;
@@ -199,6 +202,22 @@ public class Emoji {
                 .filter(entry -> entry.getKey() == id)
                 .findFirst()
                 .map(Map.Entry::getValue);
+    }
+
+    /**
+     * Refreshes the emoji cache and tries to return the emoji with the given ID.
+     * If no such emoji could be found, the returned future completes
+     * {@linkplain CompletableFuture#exceptionally(Function) exceptionally} with a {@link NoSuchElementException}.
+     *
+     * @param id The ID of the Emoji to get.
+     *
+     * @return The emoji.
+     */
+    public static CompletableFuture<Emoji> requestByID(int id) {
+        return DiscordEmoji.refreshEmojiCache()
+                .thenApply(emojis -> getByID(id))
+                .thenApply(emoji -> emoji.orElseThrow(() ->
+                        new NoSuchElementException("No emoji with ID [" + id + "] was found!")));
     }
 
     /**

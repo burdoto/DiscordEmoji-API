@@ -3,7 +3,10 @@ package de.kaleidox.discordemoji.model;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
 
 import de.kaleidox.discordemoji.DiscordEmoji;
 
@@ -131,6 +134,22 @@ public class EmojiPack {
                 .filter(entry -> entry.getKey() == id)
                 .findFirst()
                 .map(Map.Entry::getValue);
+    }
+
+    /**
+     * Refreshes the emoji-pack cache and tries to return the pack with the given ID.
+     * If no such pack could be found, the returned future completes
+     * {@linkplain CompletableFuture#exceptionally(Function) exceptionally} with a {@link NoSuchElementException}.
+     *
+     * @param id The ID of the EmojiPack to get.
+     *
+     * @return The EmojiPack.
+     */
+    public static CompletableFuture<EmojiPack> requestByID(int id) {
+        return DiscordEmoji.refreshEmojiCache()
+                .thenApply(packs -> getByID(id))
+                .thenApply(pack -> pack.orElseThrow(() ->
+                        new NoSuchElementException("No pack with ID [" + id + "] was found!")));
     }
 
     /**

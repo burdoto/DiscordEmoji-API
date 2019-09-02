@@ -2,6 +2,9 @@ package de.kaleidox.discordemoji.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+
+import de.kaleidox.discordemoji.DiscordEmoji;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.jetbrains.annotations.Nullable;
@@ -65,6 +68,19 @@ public class EmojiCategory {
      */
     public static @Nullable EmojiCategory getByIndex(int index) {
         return cache.get(index);
+    }
+
+    /**
+     * Refreshes the emoji-category cache and tries to return the category with the given ID.
+     * If no such category could be found, the returned future completes with {@code null}.
+     *
+     * @param index The ID of the EmojiCategory to get.
+     *
+     * @return The category, or null if the index could not be found.
+     */
+    public static CompletableFuture<EmojiCategory> requestByID(int index) {
+        return DiscordEmoji.refreshEmojiCache()
+                .thenApply(categories -> getByIndex(index));
     }
 
     /**
