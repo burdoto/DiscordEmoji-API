@@ -14,6 +14,7 @@ import de.kaleidox.util.PromisedValue;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
+import org.jetbrains.annotations.Contract;
 
 /**
  * Representation of an Emoji
@@ -160,6 +161,7 @@ public class Emoji {
         return filesize == 0 ? OptionalInt.empty() : OptionalInt.of(filesize);
     }
 
+    @Contract("!null -> this; null -> fail")
     private Emoji update(JsonNode data) {
         String str;
 

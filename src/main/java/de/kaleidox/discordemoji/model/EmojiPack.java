@@ -12,6 +12,7 @@ import de.kaleidox.discordemoji.DiscordEmoji;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
+import org.jetbrains.annotations.Contract;
 
 /**
  * Representation of an EmojiPack.
@@ -94,6 +95,7 @@ public class EmojiPack {
         return size;
     }
 
+    @Contract("!null -> this; null -> fail")
     private EmojiPack update(JsonNode data) {
         String str;
 

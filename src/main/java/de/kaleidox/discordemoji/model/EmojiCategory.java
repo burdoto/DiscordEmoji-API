@@ -7,6 +7,7 @@ import java.util.concurrent.CompletableFuture;
 import de.kaleidox.discordemoji.DiscordEmoji;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -43,6 +44,7 @@ public class EmojiCategory {
         return index;
     }
 
+    @Contract("_ -> this")
     private EmojiCategory update(int newIndex) {
         if (cache.size() > newIndex) {
             EmojiCategory oldValue = cache.get(newIndex);
