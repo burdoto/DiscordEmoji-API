@@ -44,6 +44,17 @@ public class EmojiCategory {
         return index;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof EmojiCategory
+                && ((EmojiCategory) obj).name.equals(name);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("EmojiCategory(name:%s)", name);
+    }
+
     @Contract("_ -> this")
     private EmojiCategory update(int newIndex) {
         if (cache.size() > newIndex) {

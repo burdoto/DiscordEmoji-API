@@ -161,6 +161,17 @@ public class Emoji {
         return filesize == 0 ? OptionalInt.empty() : OptionalInt.of(filesize);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Emoji
+                && ((Emoji) obj).id == id;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Emoji(id:%d,title:%s)", id, title);
+    }
+
     @Contract("!null -> this; null -> fail")
     private Emoji update(JsonNode data) {
         String str;

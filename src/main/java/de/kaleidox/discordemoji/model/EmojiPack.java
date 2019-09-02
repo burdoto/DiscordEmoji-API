@@ -95,6 +95,17 @@ public class EmojiPack {
         return size;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof EmojiPack
+                && ((EmojiPack) obj).id == id;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("EmojiPack(id:%d,name:%s)", id, name);
+    }
+
     @Contract("!null -> this; null -> fail")
     private EmojiPack update(JsonNode data) {
         String str;
