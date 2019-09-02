@@ -91,7 +91,7 @@ public class EmojiCategory {
      *
      * @return The category, or null if the index could not be found.
      */
-    public static CompletableFuture<EmojiCategory> requestByID(int index) {
+    public static CompletableFuture<EmojiCategory> requestByIndex(int index) {
         return DiscordEmoji.refreshEmojiCache()
                 .thenApply(categories -> getByIndex(index));
     }
