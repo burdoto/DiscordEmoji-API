@@ -53,7 +53,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.10.0.pr1'
     
     // jackson modules
-    runtimeOnly 'com.fasterxml.jackson.module:jackson-module-afterburner:1.9.4'
+    runtimeOnly 'com.fasterxml.jackson.module:jackson-module-afterburner:2.10.2'
 
     testImplementation 'junit:junit:4.12'
 }
