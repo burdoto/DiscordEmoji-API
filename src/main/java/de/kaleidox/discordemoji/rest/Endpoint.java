@@ -12,22 +12,22 @@ public enum Endpoint {
     /**
      * The endpoint to request all available Emojis.
      */
-    LIST_ALL_EMOJIS("https://discordemoji.com/api"),
+    LIST_ALL_EMOJIS("https://emoji.gg/api"),
 
     /**
      * The endpoint to request all available EmojiPacks.
      */
-    LIST_ALL_PACKS("https://discordemoji.com/api/packs"),
+    LIST_ALL_PACKS("https://emoji.gg/api/packs"),
 
     /**
      * The endpoint to request all available EmojiCategories.
      */
-    LIST_ALL_CATEGORIES("https://discordemoji.com/api?request=categories"),
+    LIST_ALL_CATEGORIES("https://emoji.gg/api?request=categories"),
 
     /**
      * The endpoint to request the current website stats.
      */
-    LIST_WEBSITE_STATS("https://discordemoji.com/api?request=stats");
+    LIST_WEBSITE_STATS("https://emoji.gg/api?request=stats");
 
     /**
      * The URL for this endpoint.
