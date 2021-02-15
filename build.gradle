@@ -55,7 +55,7 @@ dependencies {
     // jackson modules
     runtimeOnly 'com.fasterxml.jackson.module:jackson-module-afterburner:1.9.4'
 
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13.2'
 }
 
 sourceSets {
