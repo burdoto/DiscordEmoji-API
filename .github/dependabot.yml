@@ -1,0 +1,26 @@
+version: 2
+updates:
+- package-ecosystem: gradle
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "04:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: com.fasterxml.jackson.module:jackson-module-afterburner
+    versions:
+    - 2.12.1
+    - 2.12.2
+  - dependency-name: com.fasterxml.jackson.core:jackson-databind
+    versions:
+    - 2.12.1
+    - 2.12.2
+  - dependency-name: junit:junit
+    versions:
+    - 4.13.1
+  - dependency-name: com.squareup.okhttp3:okhttp
+    versions:
+    - 4.9.0
+  - dependency-name: io.codearte.gradle.nexus:gradle-nexus-staging-plugin
+    versions:
+    - 0.22.0
